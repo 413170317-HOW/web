@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>所有認證</h1>
+<ul>
+    {% for cert in certs %}
+    <li>
+        <a href="/cert/{{ cert.ID }}">{{ cert.Title }}</a>
+        <p>{{ cert.Description }}</p>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
