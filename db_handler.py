@@ -26,10 +26,11 @@ class DBHandler:
             IF OBJECT_ID('Courses', 'U') IS NULL
             CREATE TABLE Courses (
                 ID INT IDENTITY(1,1) PRIMARY KEY,
-                CertificationID INT FOREIGN KEY REFERENCES Certifications(ID),
+                CertificationID INT,
                 Title NVARCHAR(255),
                 URL NVARCHAR(MAX),
-                Description NVARCHAR(MAX)
+                Description NVARCHAR(MAX),
+                FOREIGN KEY (CertificationID) REFERENCES Certifications(ID)
             )
         ''')
 
@@ -37,10 +38,12 @@ class DBHandler:
             IF OBJECT_ID('Modules', 'U') IS NULL
             CREATE TABLE Modules (
                 ID INT IDENTITY(1,1) PRIMARY KEY,
-                CourseID INT FOREIGN KEY REFERENCES Courses(ID),
+                CourseID INT,
                 Title NVARCHAR(255),
                 URL NVARCHAR(MAX),
-                Description NVARCHAR(MAX)
+                Description NVARCHAR(MAX),
+                FOREIGN KEY (CourseID) REFERENCES Courses(ID)
+            )
         ''')
 
     def get_or_create_certification(self, title, url):
