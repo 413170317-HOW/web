@@ -21,7 +21,7 @@ class DBHandler:
                 Description NVARCHAR(MAX)  -- ✅ 新增介紹欄位
             )
         ''')
-
+        ###### coursrs ######
         self.cursor.execute('''
             IF OBJECT_ID('Courses', 'U') IS NULL
             CREATE TABLE Courses (
@@ -33,7 +33,7 @@ class DBHandler:
                 FOREIGN KEY (CertificationID) REFERENCES Certifications(ID)
             )
         ''')
-
+        ###### module ######
         self.cursor.execute('''
             IF OBJECT_ID('Modules', 'U') IS NULL
             CREATE TABLE Modules (
