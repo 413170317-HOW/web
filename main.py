@@ -4,13 +4,14 @@ from db_handler import DBHandler
 from selenium.webdriver.common.by import By
 import time
 
+# 抓認證標題
 def get_cert_title(driver):
     try:
         title = driver.find_element(By.TAG_NAME, "h1").text.strip()
-        print(f"📘 認證標題：{title}")
+        print(f"   認證標題：{title}")
         return title
     except:
-        print("❌ 認證標題擷取失敗，使用 Unknown Certification")
+        print("❌ 認證標題擷取失敗")
         return "Unknown Certification"
 
 def main():

@@ -41,40 +41,48 @@ def click_modules(driver):
     return titles
     """
     modules_data = []
+    module_blocks = WebDriverWait(driver, 10).until(
+        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div[data-bi-name="module"]'))
+    )
 
-    try:
-        module_blocks = WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div[data-bi-name="module"]'))
-        )
-
-        for idx, module in enumerate(module_blocks, start=1):
-            print(f"🔗 第 {idx} 個模組：")
-
+    for idx, module in enumerate(module_blocks, start=1):
+        print(f"            🔗 第 {idx} 個模組：")
+        try:
             try:
+                # 優先用 a 抓 title 和 href
                 link_elem = module.find_element(By.CSS_SELECTOR, 'a.font-weight-semibold')
                 link_text = link_elem.text.strip()
                 link_href = link_elem.get_attribute('href')
+            except:
+                # fallback：用 h3 抓 title，並從祖先找 <a>
+                link_elem = module.find_element(By.CSS_SELECTOR, 'h3.font-size-h6')
+                link_text = link_elem.text.strip()
+                parent_a = link_elem.find_element(By.XPATH, './ancestor::a[1]')
+                link_href = parent_a.get_attribute('href')
 
-                try:
-                    summary_div = module.find_element(By.CSS_SELECTOR, '.module-summary')
-                    desc_text = summary_div.get_attribute('textContent').strip()
-                except Exception as e:
-                    desc_text = "(❌ 無法取得敘述)"
+            try: # 抓模組敘述
+                summary_div = module.find_element(By.CSS_SELECTOR, '.module-summary')
 
-                print(f"    🌐 連結：{link_href}")
-                print(f"    📘 標題：{link_text}")
-                print(f"    📝 敘述：{desc_text}")
+                # 移除內部 class="alert" 的元素
+                alerts = summary_div.find_elements(By.CSS_SELECTOR, '.alert')
+                for alert in alerts:
+                    driver.execute_script("arguments[0].remove();", alert)
 
-                modules_data.append({
-                    'title': link_text,
-                    'url': link_href,
-                    'description': desc_text
-                })
-
+                desc_text = summary_div.get_attribute('textContent').strip()
             except Exception as e:
-                print(f"⚠️ 第 {idx} 個模組擷取失敗：{e}")
-    except Exception as e:
-        print(f"⚠️ 模組區塊擷取失敗：{e}")
+                desc_text = "(❌ 無法取得敘述)"
+            print(f"        📘 標題：{link_text}")
+            print(f"        🌐 連結：{link_href}")
+            print(f"        📝 敘述：{desc_text}")
+
+            modules_data.append({
+                'title': link_text,
+                'url': link_href,
+                'description': desc_text
+            })
+
+        except Exception as e:  
+            print(f"⚠️ 第 {idx} 個模組擷取失敗：{e}")
     return modules_data
 
 
@@ -118,14 +126,14 @@ def process_courses(driver, db, cert_title, cert_url):
 
             #for module_title in modules:
                 #db.insert_course(cert_url, course_title, course_url, module_title)
-
+            
             db.insert_course_structure(
                 certification_title=cert_title,
                 certification_url=cert_url,
                 course_title=course_title,
                 course_url=course_url,
-                module_titles=modules
-            )
+                modules=modules  
+)
 
             driver.close()
             driver.switch_to.window(driver.window_handles[0])

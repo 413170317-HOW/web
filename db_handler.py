@@ -46,6 +46,7 @@ class DBHandler:
             )
         ''')
 
+    #	取得或建立認證，回傳 ID
     def get_or_create_certification(self, title, url):
         self.cursor.execute('SELECT ID FROM Certifications WHERE Title = ?', (title,))
         row = self.cursor.fetchone()
@@ -55,7 +56,8 @@ class DBHandler:
             self.cursor.execute('INSERT INTO Certifications (Title, URL) VALUES (?, ?)', (title, url))
             self.conn.commit()
             return self.cursor.execute('SELECT SCOPE_IDENTITY()').fetchone()[0]
-
+    
+    #   取得或建立課程，回傳 ID
     def get_or_create_course(self, title, url, cert_id):
         self.cursor.execute('SELECT ID FROM Courses WHERE Title = ? AND CertificationID = ?', (title, cert_id))
         row = self.cursor.fetchone()
@@ -65,17 +67,33 @@ class DBHandler:
             self.cursor.execute('INSERT INTO Courses (Title, URL, CertificationID) VALUES (?, ?, ?)', (title, url, cert_id))
             self.conn.commit()
             return self.cursor.execute('SELECT SCOPE_IDENTITY()').fetchone()[0]
-
-    def insert_module(self, title, course_id):
+    
+    #   插入模組（僅含 title 與 course_id）
+    def insert_module(self, title, course_id, url, description):
         self.cursor.execute('SELECT ID FROM Modules WHERE Title = ? AND CourseID = ?', (title, course_id))
         if not self.cursor.fetchone():
-            self.cursor.execute('INSERT INTO Modules (Title, CourseID) VALUES (?, ?)', (title, course_id))
-
-    def insert_course_structure(self, certification_title, certification_url, course_title, course_url, module_titles):
+            self.cursor.execute('''
+                INSERT INTO Modules (Title, CourseID, URL, Description)
+                VALUES (?, ?, ?, ?)
+            ''', (title, course_id, url, description))
+            #print(f"✅ 新增模組：{title}")
+        #else:  print(f"ℹ️ 模組已存在：{title}")
+            
+    # 	根據三層結構（認證→課程→模組）統一插入
+    def insert_course_structure(self, certification_title, certification_url, course_title, course_url, modules):
+        """
+        modules: List of dicts, each with 'title', 'url', 'description'
+        """
         cert_id = self.get_or_create_certification(certification_title, certification_url)
         course_id = self.get_or_create_course(course_title, course_url, cert_id)
-        for module_title in module_titles:
-            self.insert_module(module_title, course_id)
+
+        for module in modules:
+            self.insert_module(
+                title=module['title'],
+                course_id=course_id,
+                url=module['url'],
+                description=module['description']
+            )
 
     def commit(self):
         self.conn.commit()
