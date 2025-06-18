@@ -29,6 +29,7 @@ def main():
 
         cert_links = get_cert_links(driver)
 
+        #for i, cert_url in enumerate(cert_links[:3], start=1):
         for i, cert_url in enumerate(cert_links, start=1):
             print(f"\n👉 開始第 {i} 個認證：{cert_url}")
             driver.get(cert_url)
