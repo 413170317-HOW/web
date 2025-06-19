@@ -1,0 +1,189 @@
+/* Reset & Base */
+body {
+  margin: 0;
+  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #121212;
+  color: #eee;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Navbar / Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+  background-color: #03559A;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* 確保在其他元素上方 */
+}
+
+nav img {
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+}
+
+nav .left-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+nav .middle-links {
+  flex-grow: 1;
+}
+
+nav .nav-link {
+  color: #eee;
+  text-decoration: none;
+  margin-right: 1rem;
+  font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
+  font-size: 24px;
+}
+
+nav .nav-link:hover,
+nav .nav-link:focus,
+nav .nav-link:active {
+  color: white;
+  text-decoration: none;
+  outline: none;
+}
+
+nav .user-btn {
+  color: #eee;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+nav .login-btn {
+  cursor: pointer;
+}
+
+/* Main Content */
+main {
+  padding: 2rem;
+  margin-top: 70px; /* 避開固定 nav */
+}
+
+.course-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.course-page-container h2 {
+  margin-bottom: 1.5rem;
+}
+
+/* Flex utilities */
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem; /* gap 整合 */
+}
+
+/* Course Cards */
+.course-card {
+  display: block;
+  background: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 320px;
+  color: #eee;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.7);
+  transition: transform 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+.course-card-top {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.course-card-top img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.course-card-bottom {
+  padding: 1rem;
+}
+
+.course-card-title {
+  margin: 0 0 0.5rem 0;
+}
+
+.course-card-description {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #bbb;
+}
+
+/* Footer */
+footer {
+  padding: 2rem;
+  text-align: center;
+  background: #222;
+  color: #bbb;
+  margin-top: 3rem;
+}
+
+footer .help-links a {
+  color: #bbb;
+  margin: 0 0.5rem;
+  text-decoration: none;
+}
+
+footer .help-links a:hover {
+  text-decoration: underline;
+}
+
+footer a.youtube-btn img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+
+/* 顯示/隱藏類別（假設存在） */
+.medium-show {
+  display: none;
+}
+
+.medium-hide {
+  display: block;
+}
+
+/* 依需求可補充響應式 */
+
+/* Dark theme class (如果有切換功能可擴充) */
+.dark-theme body {
+  background-color: #121212;
+  color: #eee;
+}

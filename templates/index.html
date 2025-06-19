@@ -1,19 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW" class="dark-theme">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <title>微軟線上課程</title>
 </head>
 <body>
-    <h1>所有認證</h1>
-<ul>
-    {% for cert in certs %}
-    <li>
-        <a href="/cert/{{ cert.ID }}">{{ cert.Title }}</a>
-        <p>{{ cert.Description }}</p>
-    </li>
-    {% endfor %}
-</ul>
+  <nav>
+    <div class="medium-show">
+      <img alt="menubar" src="{{ url_for('static', filename='menubar.svg') }}" width="35" height="35" />
+    </div>
+    <a class="left-logo medium-hide" href="/">
+    微軟線上課程
+    </a>
+    <div class="middle-links">
+      <a class="nav-link medium-hide" href="/">認證</a>
+    </div>
+    <div class="user-btn">
+      <div class="login-btn">登入</div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="course-page-container">
+      <h2>認證總覽</h2>
+      <div class="flex flex-wrap justify-center items-start gap-24">
+        {% for cert in certs %}
+        <a class="course-card" href="/cert/{{ cert.ID }}">
+          <div class="course-card-top">
+            <img alt="{{ cert.Title }}" src="{{ url_for('static', filename=cert.Image) }}" />
+          </div>
+          <div class="course-card-bottom">
+            <h4 class="course-card-title">{{ cert.Title }}</h4>
+            <div class="course-card-description">{{ cert.Description }}</div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="help-links">
+      <a href="/zh-TW/terms">服務條款</a> | <a href="/zh-TW/privacy">隱私權政策</a>
+    </div>
+  </footer>
 </body>
 </html>
